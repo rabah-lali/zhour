@@ -6,8 +6,8 @@
 
 <?php
 echo "Simple addition in php </br> ";
-$x1 = 13;
-$x2 = 11;
+$x1 = 7;
+$x2 = 123;
 $sum = $x1 + $x2;
 echo "$x1 + $x2 = $sum";
 ?>
