@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # You could open this script file in a text editor and copy past the lines
 # one by one and executing them on ubuntu terminal
 # or execute the script in one go by entering the following command

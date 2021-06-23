@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This zhour2.sh script is fot creating the docker Image 
 # and pushing it to docker hub, thus It could be pulled later
 # and used to run containers on other machines
