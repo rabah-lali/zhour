@@ -12,7 +12,7 @@
 # rabahdockerid is the ID used when creating the docker hub account
 # go ahead and create you own account on docker hub
 
-docker build -t rabahdockerid/zhour-php-image .
+docker build -t rabahdockerid/zhour-php-image:v2 .
 
 # command to log in to docker hub
 docker login
@@ -32,7 +32,7 @@ docker login
 
 
 # to push the image to docker hub
-docker push rabahdockerid/zhour-php-image
+docker push rabahdockerid/zhour-php-image:v2
 
 
 # Once your image is pushed to your dockerhub account
