@@ -1,18 +1,20 @@
 #!/bin/bash
 
+
+
 # This zhour2.sh script is fot creating the docker Image 
 # and pushing it to docker hub, thus It could be pulled later
 # and used to run containers on other machines
 
 #buil image from app
 
-docker build -t php-image .
+#************ docker build -t php-image .
 
 #execute image
 
-docker run -d --name image-php-web -p 8084:80 php-image
+# *************** docker run -d --name image-php-web -p 8084:80 php-image
 
-#push this image in docker hub
+# Build and tag the image
 docker build -t zhordockerid/php-image .
 
 # command to log in to docker hub
@@ -29,10 +31,10 @@ docker push zhordockerid/php-image
 # rabahdockerid is the ID used when creating the docker hub account
 # go ahead and create you own account on docker hub
 
-docker build -t rabahdockerid/zhour-php-image .
+#************* docker build -t rabahdockerid/zhour-php-image .
 
 # command to log in to docker hub
-docker login
+# ************* docker login
 # provide the user name when prompted, namely the dockerid 
 # in our case it is rabahdockerid
 
@@ -49,7 +51,7 @@ docker login
 
 
 # to push the image to docker hub
-docker push rabahdockerid/zhour-php-image
+# **************** docker push rabahdockerid/zhour-php-image
 
 
 # Once your image is pushed to your dockerhub account
