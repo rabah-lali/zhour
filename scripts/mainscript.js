@@ -30,4 +30,9 @@ return daysOfTheWeek[dayNumber - 1];
 
 }
 
-setInterval(updateDateTime,1000);
+/* the setInterval method schedules 
+the updateDateTime function to be run 
+every 1000 milli secondes
+*/  
+
+setInterval(updateDateTime,1000); 
