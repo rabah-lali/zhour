@@ -25,8 +25,9 @@ $header ='<!DOCTYPE html>
                 <div class="collapse navbar-collapse" id="navbarCollapse">'.
                     createTopNav()
                .'</div>
-               <a class="navbar-brand" href="#">Aujourd\'hui nous sommes le '.date('d/m/Y h:i:s').'</a>
+               <a class="navbar-brand" href="#">Today:  <span id = "currentDate">currentDate</span> <span id = "currentTime">currentTime</span></a>
             </nav>' ;
+            
 
 function createTopNav()
 {
@@ -54,6 +55,8 @@ function createTopNav()
         }
     }
     $res.="</ul>";
-    return $res;
+        return $res;
 }
+
+
 
