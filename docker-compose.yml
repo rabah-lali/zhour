@@ -1,16 +1,18 @@
 version: '3.3'
 
 # The following command creates a volume which will be referenced
-# later by other containers to store their data. In our case it will be used by the mysql container
+# later by other containers to store their data. In our case it will be used by the 
+# mysql container
 volumes:
-  # this volume will be created by docker, if you execute the command docker volume ls , you will find this volume among other volumes
+  # this volume will be created by docker, if you execute the command docker volume ls 
+  # on the terminal, you will find this volume among other volumes
   zhour_data_files:
 
 
 # Our application is composed of 2 services enumerated hereafter
-# namely zhour_mysql and the other is zhourwebsite
+# namely zhour_mysql and the other is zhour_website
 services:
-  # This name will be referenced later by the zhourwebsite service to get linked to this one
+  # This name will be referenced later by the zhour_website service to get linked to this one
   zhour_mysql:
     # This is the image to pull from docker hub to create the container
     image: mysql:8.0.0
@@ -18,8 +20,8 @@ services:
     container_name: zhour_mysql8_server
 
     # Declaration of environnement variables, these environnement variables
-    # will be retrieved inside the container. so if you connect to zhour-mysql8-server container
-    # by docker exec -it zhour-mysql8-server /bin/bash
+    # will be retrieved inside the container. so if you connect to zhour_mysql8_server container
+    # by docker exec -it zhour_mysql8_server /bin/bash
     # and you execute the printenv command on the shell, you will find the following
     # environnement variables among many others.
     environment:
@@ -37,9 +39,9 @@ services:
       - ZHOUR_ENV_VARIABLE= Zhour's English is getting better day after day
     volumes:
       - zhour_data_files:/var/lib/mysql
-      # In the above line we mounted the zhour_data_files volume created previously at the begenning 
-      # of the file to /var/lib/mysql folder of the mysql container.
-      #It is in this /var/lib/mysql folder where mysql stores its databases.
+      # In the above line we mounted the zhour_data_files volume created previously at 
+      # the begenning of the file to /var/lib/mysql folder of the mysql container.
+      # It is in this /var/lib/mysql folder where mysql stores its databases.
 
     # This is to make the container restart automatically eveytime the computer reboots
     restart: always
@@ -57,23 +59,29 @@ services:
       dockerfile: Dockerfile
 
     environment:
-      # the following MYSQL_DBHOST envirennement variable is used inside the index.php page to create the connection to the database container
-      # As you see the value given to MYSQL_DBHOST is the name of the conatiner service as defined in the top of this file
+      # the following MYSQL_DBHOST environnement variable is used inside the index.php page 
+      # to create the connection to the database container
+      # As you see the value given to MYSQL_DBHOST is the name of the container service 
+      # as defined in the top of this file
       - MYSQL_DBHOST=zhour_mysql
-      # This MYSQL_DBUSER envirennement variable is also used by the index.php page
+      # This MYSQL_DBUSER environnement variable is also used by the index.php page
       - MYSQL_DBUSER=root
        # This MYSQL_DBPASS environnement variable is also used by the index.php page
       - MYSQL_DBPASS=secret
       #- MYSQL_DBNAME=
-      # The above environnement variable MYSQL_DBNAME is commented out, because our example doesn't access any database
+      # The above environnement variable MYSQL_DBNAME is commented out, 
+      # because our example doesn't access any database
       # It rather displays the available databases inside the mysql container
+      # If your application had to access any database, you would have created the database 
+      # ahead of time by any means, It could be by running a script in your mysql container 
+      # or using phpmyadmin
     ports:
       # This is the http port mapping
       - 8090:80
       # This is the https port mapping
       - 8083:443
 
-      
+
       # The following directive allows to link the present container to the zhour_mysql service previously defined
       # this allows the 2 containers to communicate with each other via a virtual network created by docker
       # If you execute the command docker network ls on the terminal, you will see the virtual network created 
