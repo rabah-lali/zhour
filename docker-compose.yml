@@ -1,32 +1,84 @@
-version: '3.8'
+version: '3.3'
 
+# The following command creates a volume which will be referenced
+# later by other containers to store their data. In our case it will be used by the mysql container
 volumes:
-  datafiles:
+  # this volume will be created by docker, if you execute the command docker volume ls , you will find this volume among other volumes
+  zhour_data_files:
 
+
+# Our application is composed of 2 services enumerated hereafter
+# namely zhour_mysql and the other is zhourwebsite
 services:
-  mysql:
+  # This name will be referenced later by the zhourwebsite service to get linked to this one
+  zhour_mysql:
+    # This is the image to pull from docker hub to create the container
     image: mysql:8.0.0
-    container_name: mysql8
+    # This is the container name
+    container_name: zhour_mysql8_server
+
+    # Declaration of environnement variables, these environnement variables
+    # will be retrieved inside the container. so if you connect to zhour-mysql8-server container
+    # by docker exec -it zhour-mysql8-server /bin/bash
+    # and you execute the printenv command on the shell, you will find the following
+    # environnement variables among many others.
     environment:
+      # This environnement variable will be used by the container
       - MYSQL_ROOT_PASSWORD=secret
+      # This is the port the container will listen to
       - MYSQL_TCP_PORT=3306
+      # The above environnement variables are already defined inside the mysql:8.0.0 docker Image
+      # what the above declarations did is actually gave these environnement variables values
+      # namely secret and 3306 respectivly.
+
+
+      # The following environement variable is just for testing purposes
+      # it is not used by mysql container or the php container
+      - ZHOUR_ENV_VARIABLE= Zhour's English is getting better day after day
     volumes:
-      - datafiles:/var/lib/mysql
+      - zhour_data_files:/var/lib/mysql
+      # In the above line we mounted the zhour_data_files volume created previously at the begenning 
+      # of the file to /var/lib/mysql folder of the mysql container.
+      #It is in this /var/lib/mysql folder where mysql stores its databases.
+
+    # This is to make the container restart automatically eveytime the computer reboots
     restart: always
 
-  website:
-    container_name: php73
+  zhour_website:
+    container_name: zhour_php_server
+
+    # In the build directive we are defining how to build the images to lauch the container
+    # We could have built and taged the Image and pushed it to docker hub ahead of time
+    # and reference it like follow
+    # image: zhordockerid/some_thing avoiding the build directive altogether
+
     build:
       context: .
       dockerfile: Dockerfile
+
     environment:
-      - MYSQL_DBHOST=mysql
-      - MYSQL_DBPORT=3306
+      # the following MYSQL_DBHOST envirennement variable is used inside the index.php page to create the connection to the database container
+      # As you see the value given to MYSQL_DBHOST is the name of the conatiner service as defined in the top of this file
+      - MYSQL_DBHOST=zhour_mysql
+      # This MYSQL_DBUSER envirennement variable is also used by the index.php page
       - MYSQL_DBUSER=root
+       # This MYSQL_DBPASS environnement variable is also used by the index.php page
       - MYSQL_DBPASS=secret
       #- MYSQL_DBNAME=
+      # The above environnement variable MYSQL_DBNAME is commented out, because our example doesn't access any database
+      # It rather displays the available databases inside the mysql container
     ports:
-      - 8080:80
+      # This is the http port mapping
+      - 8090:80
+      # This is the https port mapping
       - 8083:443
+
+      
+      # The following directive allows to link the present container to the zhour_mysql service previously defined
+      # this allows the 2 containers to communicate with each other via a virtual network created by docker
+      # If you execute the command docker network ls on the terminal, you will see the virtual network created 
+      # created by docker compose behind the scene.
     depends_on:
-      - mysql
+      - zhour_mysql
+    # This is to make the container restart automatically evey time the computer reboots.
+    restart: always
